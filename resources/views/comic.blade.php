@@ -66,9 +66,12 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-                <img src="{{ $comics['img'] }}" />
+                <img src="{{ $comic['img'] }}" />
                 <br />
-                {{ $comics['alt'] }} 
+                {{ $comic['alt'] }}                
+                @php
+                    echo App\Http\Controllers\WebComicController::getNavigation($comic['num']);
+                @endphp
             </div>
         </div>
     </body>

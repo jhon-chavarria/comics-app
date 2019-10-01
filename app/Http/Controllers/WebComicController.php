@@ -24,6 +24,13 @@ class WebComicController extends Controller
      */
     public function index(Request $request)
     {
-        $get_data = AppUtil::callAPI('GET', $this->recentComicUrl);
+        $comics = AppUtil::callAPI('GET', $this->recentComicUrl);
+        $data = [];
+        
+        if (isset($comics)) {
+            $data = json_decode($comics, true);
+        }
+
+        return view('comic', ['comics' => $data]);
     }
 }

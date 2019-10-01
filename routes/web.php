@@ -11,4 +11,4 @@
 |
 */
 
-Route::get('/', 'WebComicController@index')->name('welcome');
+Route::get('/', 'WebComicController@index')->name('comic');

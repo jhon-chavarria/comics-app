@@ -41,7 +41,13 @@ class WebComicController extends Controller
     public function getComicByNumber(Request $request)
     {
         $this->comicPresenter->getComicByNumber($this->comicRepositoryInterface, $request->comicNumber);
-        return view('comic', ['comic' => $this->comicPresenter->showComic()]);
+        $comic = $this->comicPresenter->showComic();
+
+        if ($comic) {
+            return view('comic', ['comic' => $this->comicPresenter->showComic()]);
+        } else {
+            return abort(404);
+        }
     }
 
     public function getNavigation($page)
@@ -54,13 +60,14 @@ class WebComicController extends Controller
     /**
      * Prev Link Action
      */
-    private static function getPrevAction($page)
+    private function getPrevAction($page)
     {
         if ($page == 1) {
-            //$prev = '/comic/' . ($page - 1);
             return '';
         }
-        return $prev = '/comic/' . ($page - 1);
+
+        $this->comicPresenter->getPrevNavigationLink($this->comicRepositoryInterface, $page);
+        return $prev = '/comic/' . $this->comicPresenter->showNextLink();
     }
 
     /**
@@ -74,8 +81,8 @@ class WebComicController extends Controller
         if ($currentComic['num'] === $page) {
             return '';
         }
-
-        return '/comic/' . ($page + 1);
+     
+        $this->comicPresenter->getNextNavigationLink($this->comicRepositoryInterface, $page);
+        return '/comic/' . $this->comicPresenter->showNextLink();
     }
-
 }

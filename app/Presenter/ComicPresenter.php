@@ -6,6 +6,7 @@ use App\Model\ComicRepositoryInterface;
 class ComicPresenter 
 {
     private $comic;
+    private $link;
   
     function getRecentComic(ComicRepositoryInterface $repository)
     {
@@ -15,6 +16,21 @@ class ComicPresenter
     function getComicByNumber(ComicRepositoryInterface $repository, $number)
     {
         $this->comic = $repository->getComicByNumber($number);
+    }
+
+    function getNextNavigationLink(ComicRepositoryInterface $repository, $number)
+    {
+        $this->link = $repository->getNextNavigationLink($number);
+    }
+
+    function getPrevNavigationLink(ComicRepositoryInterface $repository, $number)
+    {
+        $this->link = $repository->getPrevNavigationLink($number);
+    }
+
+    function showNextLink()
+    {
+        return $this->link;
     }
 
     function showComic()

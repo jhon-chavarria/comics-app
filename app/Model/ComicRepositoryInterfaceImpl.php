@@ -18,7 +18,7 @@ class ComicRepositoryInterfaceImpl implements ComicRepositoryInterface
                 return json_decode($response->getBody(), true);
             }
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            return '';
+            return null;
         }
     }
 
@@ -33,6 +33,31 @@ class ComicRepositoryInterfaceImpl implements ComicRepositoryInterface
             }
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             return '';
+        }
+    }
+
+    public function getNextNavigationLink($number) {
+        return $this->recursiveNavigationGenerator($number, "NEXT");
+    }
+
+    public function getPrevNavigationLink($number) {
+        return $this->recursiveNavigationGenerator($number, "PREV");
+    }
+
+    private function recursiveNavigationGenerator($number, $action) {
+
+        if ($action == 'NEXT') {
+            $number++;
+        } else {
+            $number--;
+        }
+        
+        $comic = $this->getComicByNumber($number);
+
+        if ($comic) {
+            return $number;
+        } else {
+            return $this->recursiveNavigationGenerator($number++, $action);
         }
     }
 }

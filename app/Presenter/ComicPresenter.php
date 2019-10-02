@@ -3,6 +3,9 @@
 namespace App\Presenter;
 use App\Model\ComicRepositoryInterface;
 
+/**
+* Class ComicPresenter, Bridge for Controller and Repositories
+*/
 class ComicPresenter 
 {
     private $comic;

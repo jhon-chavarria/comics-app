@@ -4,6 +4,9 @@ namespace App\Model;
 
 use App\Model\ComicRepositoryInterface;
 
+/**
+* Interface ComicRepositoryInterface Implementation
+*/
 class ComicRepositoryInterfaceImpl implements ComicRepositoryInterface
 {
     private static $recentComicUrl = "https://xkcd.com/info.0.json";

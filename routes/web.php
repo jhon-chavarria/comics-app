@@ -12,4 +12,5 @@
 */
 
 Route::get('/', 'WebComicController@index')->name('comic');
+Route::get('/me', 'MeController@index')->name('index');
 Route::get('/comic/{comicNumber}', 'WebComicController@getComicByNumber');

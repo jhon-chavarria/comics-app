@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('section-title', 'Today Comic')
 @section('pageTitle', 'Today Comic')
 @section('content')
 <div class="flex-center position-ref full-height">

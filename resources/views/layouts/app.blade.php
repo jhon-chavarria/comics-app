@@ -14,16 +14,13 @@
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 
  <!DOCTYPE html>
- <html lang="en">
- 
+ <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
  <head>
    <meta charset="utf-8" />
    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-   <title>
-     Material Dashboard by Creative Tim
-   </title>
+   <title>@yield('pageTitle')</title>
    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
    <!--     Fonts and icons     -->
    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
@@ -49,14 +46,14 @@
        </div>
        <div class="sidebar-wrapper">
          <ul class="nav">
-           <li class="nav-item active  ">
-             <a class="nav-link" href="./dashboard.html">
+           <li class="nav-item {{ Request::is('/') ? 'active' : '' }}  ">
+             <a class="nav-link" href="/">
                <i class="material-icons">dashboard</i>
                <p>Comics</p>
              </a>
            </li>
-           <li class="nav-item ">
-             <a class="nav-link" href="./user.html">
+           <li class="nav-item {{ Request::is('me') ? 'active' : '' }}  ">
+             <a class="nav-link" href="/me">
                <i class="material-icons">person</i>
                <p>About</p>
              </a>

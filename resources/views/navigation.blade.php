@@ -27,13 +27,17 @@
     </head>
     <body>
         <div class="navigation" >
-            <a href={{ $prev }} class="previous">
-                Previous
-            </a>
-              
+            @if(!empty($prev))
+                <a href={{ $prev }} class="previous">
+                    Previous
+                </a>
+            @endif
+
+            @if(!empty($next))
             <a href="{{ $next }}" class="next">
                 Next
             </a>
+            @endif
         </div>
     </body>
 </html>

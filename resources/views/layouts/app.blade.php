@@ -46,7 +46,7 @@
        </div>
        <div class="sidebar-wrapper">
          <ul class="nav">
-           <li class="nav-item {{ Request::is('/') ? 'active' : '' }}  ">
+           <li class="nav-item {{ Request::is('/','comic/*') ? 'active' : '' }}  ">
              <a class="nav-link" href="/">
                <i class="material-icons">dashboard</i>
                <p>Comics</p>

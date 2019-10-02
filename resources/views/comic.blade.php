@@ -68,10 +68,11 @@
             <div class="content">
                 <img src="{{ $comic['img'] }}" />
                 <br />
-                {{ $comic['alt'] }}                
-                @php
-                    echo App\Http\Controllers\WebComicController::getNavigation($comic['num']);
-                @endphp
+                {{ $comic['alt'] }}             
+                @inject('metrics', 'App\Http\Controllers\WebComicController')
+   
+                {{!! $metrics->getNavigation($comic['num']) !!}}
+              
             </div>
         </div>
     </body>

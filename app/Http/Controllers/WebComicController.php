@@ -1,76 +1,56 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Model\ComicRepositoryInterface;
+use App\Presenter\ComicPresenter;
 use Illuminate\Http\Request;
 
 class WebComicController extends Controller
 {
-    private static $recentComicUrl = "https://xkcd.com/info.0.json";
-    private static $comicUrl = "https://xkcd.com/XXX/info.0.json";
+    /**
+     * @var ComicPresenter
+     */
+    private $comicPresenter;
+    /**
+     * @var ComicRepositoryInterface
+     */
+    private $comicRepositoryInterface;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ComicRepositoryInterface $comicRepositoryInterface)
     {
+        $this->comicRepositoryInterface = $comicRepositoryInterface;
+        $this->comicPresenter = new ComicPresenter();
     }
-
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public static function index(Request $request)
+    public function index(Request $request)
     {
-        $client = new \GuzzleHttp\Client();
-        try {
-            $response = $client->request('GET', self::$recentComicUrl);
-            if (isset($response) && $response->getStatusCode() == 200) {
-                return view('comic', ['comic' => json_decode($response->getBody(), true)]);
-            }
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            abort($e->getResponse()->getStatusCode());
-        }
+        $this->comicPresenter->getRecentComic($this->comicRepositoryInterface);
+        return view('comic', ['comic' => $this->comicPresenter->showComic()]);
     }
 
     public function getComicByNumber(Request $request)
     {
-        $client = new \GuzzleHttp\Client();
-        try {
-            $finalComicUrl = str_replace("XXX", $request->comicNumber, self::$comicUrl);
-            $response = $client->request('GET', $finalComicUrl);
-            if (isset($response) && $response->getStatusCode() == 200) {
-                return view('comic', ['comic' => json_decode($response->getBody(), true)]);
-            }
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            abort($e->getResponse()->getStatusCode());
-        }
+        $this->comicPresenter->getComicByNumber($this->comicRepositoryInterface, $request->comicNumber);
+        return view('comic', ['comic' => $this->comicPresenter->showComic()]);
     }
 
-    public static function getNavigation($page)
+    public function getNavigation($page)
     {
         $prev = self::getPrevAction($page);
         $next = self::getNextAction($page);
 
         return view('navigation', ['prev' => $prev, 'next' => $next]);
     }
-
-    private static function getCurrentComic()
-    {
-        $client = new \GuzzleHttp\Client();
-        try {
-            $response = $client->request('GET', self::$recentComicUrl);
-            if (isset($response) && $response->getStatusCode() == 200) {
-                return json_decode($response->getBody(), true);
-            }
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            return '';
-
-        }
-    }
-
     /**
      * Prev Link Action
      */
@@ -86,10 +66,11 @@ class WebComicController extends Controller
     /**
      * Next Link Action
      */
-    private static function getNextAction($page)
+    private function getNextAction($page)
     {
-        $currentComic = self::getCurrentComic();
-       
+        $this->comicPresenter->getRecentComic($this->comicRepositoryInterface);
+        $currentComic = $this->comicPresenter->showComic();
+
         if ($currentComic['num'] === $page) {
             return '';
         }
@@ -97,8 +78,4 @@ class WebComicController extends Controller
         return '/comic/' . ($page + 1);
     }
 
-    private static function recursiveSearchAction($page)
-    {
-
-    }
 }
